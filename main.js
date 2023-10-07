@@ -1,16 +1,19 @@
 var form = document.getElementById('addForm');
 var itemList = document.getElementById('items');
+var filter = document.getElementById('filter');
+ 
 
 form.addEventListener('submit',addItem);
 
 itemList.addEventListener('click',removeItem);
 
-
+filter.addEventListener('keyup',filterItems);
 
 function addItem(e){
     e.preventDefault();
 
     var newItem = document.getElementById('item').value;
+    var newDesc = document.getElementById('description').value;
 
     var li = document.createElement('li');
 
@@ -18,6 +21,7 @@ function addItem(e){
     //console.log(li);
 
     li.appendChild(document.createTextNode(newItem));
+    li.appendChild(document.createTextNode(newDesc));
 
     var deleteBtn = document.createElement('button');
 
@@ -40,5 +44,21 @@ function removeItem(e){
             itemList.removeChild(li);
         }
     }
+
+}
+
+function filterItems(e){
+    var text = e.target.value.toLowerCase();
+    var items = itemList.getElementsByTagName('li');
+    Array.from(items).forEach(function(item){
+        var itemName = item.firstChild.textContent;
+        var describe = item.childNodes[1].textContent;
+        if(itemName.toLowerCase().indexOf(text) != -1 || describe.toLowerCase().indexOf(text) != -1){
+            item.style.display = 'block';
+        } else{
+            item.style.display = 'none';
+        }
+
+    });
 
 }
